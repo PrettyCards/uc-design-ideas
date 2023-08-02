@@ -1,0 +1,30 @@
+
+.borderedContainer {
+    border: 2px solid green;
+    margin:0;
+    padding:0;
+}
+
+.loginContainer {
+    width: 400px;
+    height: 500px;
+    color: green;
+}
+
+.savedUserLine {
+    padding: 10px;
+    border: 0px solid green;
+    border-bottom-width: 2px;
+}
+
+.savedUserText {
+    margin-left: 15px;
+}
+
+.savedUserText .username {
+    font-size: 2em;
+}
+
+.savedUserText .loginStatus {
+    font-size: 1.2em;
+}

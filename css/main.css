@@ -1,0 +1,34 @@
+
+@font-face {
+    font-family: dtm-mono;
+    src: url(../fonts/DTM-Mono.otf) format('truetype')
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+}
+
+html body {
+    background-image: none;
+    background-color: black;
+}
+
+.divCenterer {
+    display: flex;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.full {
+    width: 100%;
+    height: 100%;
+}
+
+.fullRowFlex {
+    display: flex;
+    width: 100%;
+}
