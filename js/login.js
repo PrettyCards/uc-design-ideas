@@ -10,7 +10,7 @@ function addNewUser(name, avatar = {image: "Dark_Destiny", rarity: "MYTHIC"}, lo
             <div class="loginStatus">${loginStatus ? "Logged in" : "<span class='red'>Not logged in</span>"}</div>
         </div>
     `;
-    document.getElementsByClassName("loginContainer")[0].appendChild(cont);
+    document.getElementById("userList").appendChild(cont);
 }
 
 addNewUser("CMD_God");

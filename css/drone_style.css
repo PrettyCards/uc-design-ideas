@@ -9,6 +9,7 @@
     width: 400px;
     height: 500px;
     color: green;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .savedUserLine {
@@ -27,4 +28,25 @@
 
 .savedUserText .loginStatus {
     font-size: 1.2em;
+}
+
+.droneBtn {
+    border: 0px solid green;
+    border-left-width: 2px;
+    /*border-top-width: 2px;*/
+    border-radius: 0;
+    font-size: 1.5em;
+    background: none;
+    color: inherit;
+    font-family: inherit;
+    padding: 6px 5px;
+    margin: 0;
+}
+
+.buttonRow {
+    border-top: 2px solid green;
+}
+
+.droneBtn:first-child {
+    border-left-width: 0;
 }
