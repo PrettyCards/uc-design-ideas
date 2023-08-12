@@ -84,7 +84,7 @@ function upscale(image = new Image(), scale = 0) {
 
     console.log(imageData, imageDataResized, imageData[0]);
     for (var i=0; i < imageData.width; i++) {
-        for (var j=0; i < imageData.height; j++) {
+        for (var j=0; j < imageData.height; j++) {
             var data = getPixel(i, j, imageData);
             for (var x=0; x < scale; x++) {
                 for (var y=0; y < scale; y++) {
