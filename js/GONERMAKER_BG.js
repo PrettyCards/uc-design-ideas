@@ -70,7 +70,7 @@ function upscale(image = new Image(), scale = 0) {
         for (var x=0; x < scale; x++) {
             for (var y=0; y < scale; y++) {
                 //console.log(imageData[i]);
-                imageDataResized.data[i*scale + x + (y * image.width * scale) + (Math.floor(i/image.width) * image.width * scale)] = imageData.data[i];
+                imageDataResized.data[i*scale + x + (y * image.width * scale) + (Math.floor(i/(image.width*4)) * image.width * scale)] = imageData.data[i];
             }
         }
     }
