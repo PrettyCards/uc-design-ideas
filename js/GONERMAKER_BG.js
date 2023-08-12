@@ -33,7 +33,7 @@ function addCanvas() {
     canvas.setAttribute("height", ratio * DR_HEIGHT);
     document.body.prepend(canvas);
 
-    createImage(ratio).then(() => {window.requestAnimationFrame(update)});
+    createImage(ratio*2).then(() => {window.requestAnimationFrame(update)});
 }
 
 function update(time) {
@@ -42,7 +42,7 @@ function update(time) {
     window.requestAnimationFrame(update);
 }
 
-
+/*
 function getPixel(x, y, pixelData) {
     var startIndex = x + y * pixelData.width;
     return {
@@ -60,6 +60,7 @@ function setPixel(pixel, x, y, pixelData) {
     pixelData.data[startIndex+2] = pixel.b;
     pixelData.data[startIndex+3] = pixel.a;
 }
+*/
 
 // Function taken from https://www.npmjs.com/package/resize-image-data
 // For some reason, my version did not work properly ;_;
