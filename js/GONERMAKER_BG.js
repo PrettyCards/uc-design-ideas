@@ -61,6 +61,26 @@ function setPixel(pixel, x, y, pixelData) {
     pixelData.data[startIndex+3] = pixel.a;
 }
 
+// Function taken from https://www.npmjs.com/package/resize-image-data
+// For some reason, my version did not work properly ;_;
+function nearestNeighbor (src, dst) {
+    let pos = 0
+
+    for (let y = 0; y < dst.height; y++) {
+        for (let x = 0; x < dst.width; x++) {
+        const srcX = Math.floor(x * src.width / dst.width)
+        const srcY = Math.floor(y * src.height / dst.height)
+
+        let srcPos = ((srcY * src.width) + srcX) * 4
+
+        dst.data[pos++] = src.data[srcPos++] // R
+        dst.data[pos++] = src.data[srcPos++] // G
+        dst.data[pos++] = src.data[srcPos++] // B
+        dst.data[pos++] = src.data[srcPos++] // A
+        }
+    }
+}
+
 function upscale(image = new Image(), scale = 0) {
     var canvas = document.createElement("CANVAS");
     canvas.setAttribute("width", image.width);
@@ -82,6 +102,7 @@ function upscale(image = new Image(), scale = 0) {
     var imageData = ctx.getImageData(0, 0, image.width, image.height);
     var imageDataResized = ctx2.getImageData(0, 0, image.width * scale, image.height * scale);
 
+    /*
     console.log(imageData, imageDataResized, imageData.data[0]);
     for (var i=0; i < imageData.width; i++) {
         for (var j=0; j < imageData.height; j++) {
@@ -95,6 +116,8 @@ function upscale(image = new Image(), scale = 0) {
             }
         }
     }
+    */
+    nearestNeighbor(imageData, imageDataResized);
     ctx2.putImageData(imageDataResized, 0, 0);
     return canvasResized;
 }
