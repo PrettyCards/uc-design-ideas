@@ -133,7 +133,7 @@ function createImage(scale = 0) {
             finalCanvas.setAttribute("width", WIDTH*2);
             finalCanvas.setAttribute("height", HEIGHT*2);
             /** @type {CanvasRenderingContext2D} */
-            var ctx = finalCanvas.getContext();
+            var ctx = finalCanvas.getContext("2d");
             ctx.drawImage(bigImage, WIDTH, HEIGHT);
             ctx.scale(-1, 0);
             ctx.drawImage(bigImage, WIDTH, HEIGHT);
