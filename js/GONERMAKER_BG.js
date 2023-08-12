@@ -82,10 +82,11 @@ function upscale(image = new Image(), scale = 0) {
     var imageData = ctx.getImageData(0, 0, image.width, image.height);
     var imageDataResized = ctx2.getImageData(0, 0, image.width * scale, image.height * scale);
 
-    console.log(imageData, imageDataResized, imageData[0]);
+    console.log(imageData, imageDataResized, imageData.data[0]);
     for (var i=0; i < imageData.width; i++) {
         for (var j=0; j < imageData.height; j++) {
             var data = getPixel(i, j, imageData);
+            console.log(data);
             for (var x=0; x < scale; x++) {
                 for (var y=0; y < scale; y++) {
                     //imageDataResized.data[i*scale + x + (y * image.width * scale) + (Math.floor(i/(image.width*4)) * image.width * scale)] = imageData.data[i];
