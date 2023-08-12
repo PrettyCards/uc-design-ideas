@@ -11,7 +11,8 @@ html, body {
 }
 
 html body {
-    background-image: url("../img/gonerbg_test.gif");
+    /*background-image: url("../img/gonerbg_test.gif");*/
+    background-image: none;
     background-color: black;
     background-position:center;
     background-size: cover;
