@@ -43,6 +43,23 @@ function update(time) {
 }
 
 
+function getPixel(x, y, pixelData) {
+    var startIndex = x + y * pixelData.width;
+    return {
+        r: pixelData.data[startIndex],
+        g: pixelData.data[startIndex+1],
+        b: pixelData.data[startIndex+2],
+        a: pixelData.data[startIndex+3]
+    };
+}
+
+function setPixel(pixel, x, y, pixelData) {
+    var startIndex = x + y * pixelData.width;
+    pixelData.data[startIndex] = pixel.r;
+    pixelData.data[startIndex+1] = pixel.g;
+    pixelData.data[startIndex+2] = pixel.b;
+    pixelData.data[startIndex+3] = pixel.a;
+}
 
 function upscale(image = new Image(), scale = 0) {
     var canvas = document.createElement("CANVAS");
@@ -66,11 +83,14 @@ function upscale(image = new Image(), scale = 0) {
     var imageDataResized = ctx2.getImageData(0, 0, image.width * scale, image.height * scale);
 
     console.log(imageData, imageDataResized, imageData[0]);
-    for (var i=0; i < imageData.data.length; i++) {
-        for (var x=0; x < scale; x++) {
-            for (var y=0; y < scale; y++) {
-                //console.log(imageData[i]);
-                imageDataResized.data[i*scale + x + (y * image.width * scale) + (Math.floor(i/(image.width*4)) * image.width * scale)] = imageData.data[i];
+    for (var i=0; i < imageData.width; i++) {
+        for (var j=0; i < imageData.height; j++) {
+            var data = getPixel(i, j, imageData);
+            for (var x=0; x < scale; x++) {
+                for (var y=0; y < scale; y++) {
+                    //imageDataResized.data[i*scale + x + (y * image.width * scale) + (Math.floor(i/(image.width*4)) * image.width * scale)] = imageData.data[i];
+                    setPixel(data, i*scale + x, j*scale + y, imageDataResized);
+                }
             }
         }
     }
