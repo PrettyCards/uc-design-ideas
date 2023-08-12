@@ -87,8 +87,6 @@ function upscale(image = new Image(), scale = 0) {
     canvas.setAttribute("width", image.width);
     canvas.setAttribute("height", image.height);
 
-    document.body.appendChild(canvas);
-
     var canvasResized = document.createElement("CANVAS");
     canvasResized.setAttribute("width", image.width * scale);
     canvasResized.setAttribute("height", image.height * scale);
@@ -129,7 +127,18 @@ function createImage(scale = 0) {
         image.onload = () => {
             console.log("Image loaded!");
             var bigImage = upscale(image, scale);
-            document.body.append(bigImage);
+            const WIDTH = bigImage.getAttribute("width");
+            const HEIGHT = bigImage.getAttribute("height");
+            var finalCanvas = document.createElement("CANVAS");
+            finalCanvas.setAttribute("width", WIDTH*2);
+            finalCanvas.setAttribute("height", HEIGHT*2);
+            /** @type {CanvasRenderingContext2D} */
+            var ctx = finalCanvas.getContext();
+            ctx.drawImage(bigImage, WIDTH, HEIGHT);
+            ctx.scale(-1, 0);
+            ctx.drawImage(bigImage, WIDTH, HEIGHT);
+
+            document.body.appendChild(finalCanvas);
         }
         image.onerror = reject;
         image.src = IMAGE_URL;
