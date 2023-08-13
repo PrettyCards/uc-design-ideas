@@ -2,6 +2,7 @@
 const DR_WIDTH = 640;
 const DR_HEIGHT = 480;
 const CYCLE_DURATION = 10000; // in miliseconds
+const SPAWN_FREQUENCY = 2000;
 const IMAGE_URL = "./img/IMAGE_DEPTH.png";
 
 var canvas;
@@ -24,8 +25,6 @@ function motionFunction(time) {
 }
 
 var modifiedImage;
-var layers = [-1000, -2000, -3000, -40000, -5000];
-var lastLayerTime = 0;
 
 function addCanvas() {
     var widthRatio = window.innerWidth / DR_WIDTH;
@@ -49,23 +48,11 @@ function update(time) {
     /** @type {CanvasRenderingContext2D} */
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
-
-    if (time - lastLayerTime > 1500) {
-        lastLayerTime+=1500;
-        layers.unshift(time);
-        //console.log("ADDED NEW!", motionFunction(0));
-
-    }
     
-    for (var i=0; i < layers.length; i++) {
-        if (time - layers[i] > CYCLE_DURATION) {
-            layers.splice(i, 1);
-            i--;
-            continue;
-        }
+    for (var i=0; i < CYCLE_DURATION / SPAWN_FREQUENCY; i++) {
         ctx.save();
         ctx.translate(WIDTH/2, HEIGHT/2);
-        var data = motionFunction(time - layers[i]);
+        var data = motionFunction((time % SPAWN_FREQUENCY) + i * SPAWN_FREQUENCY);
         ctx.scale(data.scale, data.scale);
         ctx.globalAlpha = data.opacity;
         ctx.drawImage(modifiedImage, -modifiedImage.width/2, -modifiedImage.height/2);
