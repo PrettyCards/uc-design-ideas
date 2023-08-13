@@ -12,14 +12,17 @@ function motionFunction(time) {
         return {scale: 0, opacity: 0};
     }
     var firstSect = CYCLE_DURATION*0.1;
-    //var thirdSect = CYCLE_DURATION*0.9;
+    var thirdSect = CYCLE_DURATION*0.9;
 
     var scale = 1 + time/CYCLE_DURATION*0.5;
-    var opacity = 0;
+    var opacity = 1;
     if (time <= firstSect) {
         opacity = time/(CYCLE_DURATION)/10;
-    } else {
-        opacity = 1 - (time-firstSect)/(CYCLE_DURATION-firstSect);
+    } else if (time >= thirdSect) {
+        opacity = 1 - (time-thirdSect)/(CYCLE_DURATION-thirdSect);
+    }
+    if (time > CYCLE_DURATION) {
+        opacity = 0;
     }
     return {scale: scale, opacity: opacity*0.6};
 }
