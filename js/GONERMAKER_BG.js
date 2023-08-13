@@ -8,11 +8,11 @@ const IMAGE_URL = "./img/IMAGE_DEPTH.png";
 var canvas;
 
 function motionFunction(time) {
-    if (time < 0) {
+    if (time < 0 || time > CYCLE_DURATION) {
         return {scale: 0, opacity: 0};
     }
-    var firstSect = CYCLE_DURATION*0.1;
-    var thirdSect = CYCLE_DURATION*0.9;
+    var firstSect = CYCLE_DURATION*0.2;
+    var thirdSect = CYCLE_DURATION*0.8;
 
     var scale = 1 + time/CYCLE_DURATION*0.5;
     var opacity = 1;
@@ -21,10 +21,7 @@ function motionFunction(time) {
     } else if (time >= thirdSect) {
         opacity = 1 - (time-thirdSect)/(CYCLE_DURATION-thirdSect);
     }
-    if (time > CYCLE_DURATION) {
-        opacity = 0;
-    }
-    return {scale: scale, opacity: opacity*0.6};
+    return {scale: scale, opacity: opacity*0.7};
 }
 
 var modifiedImage;
@@ -52,10 +49,11 @@ function update(time) {
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
     
-    for (var i=0; i < CYCLE_DURATION / SPAWN_FREQUENCY; i++) {
+    const FOR_COUNT = CYCLE_DURATION / SPAWN_FREQUENCY;
+    for (var i=-1; i < FOR_COUNT; i++) {
         ctx.save();
         ctx.translate(WIDTH/2, HEIGHT/2);
-        var data = motionFunction((time % SPAWN_FREQUENCY) + i * SPAWN_FREQUENCY);
+        var data = motionFunction((time % SPAWN_FREQUENCY) + (i * SPAWN_FREQUENCY));
         ctx.scale(data.scale, data.scale);
         ctx.globalAlpha = data.opacity;
         ctx.drawImage(modifiedImage, -modifiedImage.width/2, -modifiedImage.height/2);
