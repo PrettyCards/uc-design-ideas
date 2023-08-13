@@ -23,6 +23,10 @@ function motionFunction(time) {
     return {scale: scale, opacity: opacity*0.6};
 }
 
+var modifiedImage;
+var layers = [-1000, -2000, -3000, -40000, -5000];
+var lastLayerTime = 0;
+
 function addCanvas() {
     var widthRatio = window.innerWidth / DR_WIDTH;
     var heightRatio = window.innerHeight / DR_HEIGHT;
@@ -33,11 +37,40 @@ function addCanvas() {
     canvas.setAttribute("height", ratio * DR_HEIGHT);
     document.body.prepend(canvas);
 
-    createImage(ratio*2).then(() => {window.requestAnimationFrame(update)});
+    createImage(ratio*2).then((bigImageCanvas) => {
+        modifiedImage = bigImageCanvas;
+        window.requestAnimationFrame(update)
+    });
 }
 
 function update(time) {
+    const WIDTH = Number(canvas.getAttribute("width"));
+    const HEIGHT = Number(canvas.getAttribute("height"));
+    /** @type {CanvasRenderingContext2D} */
+    var ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
+    if (time - lastLayerTime > 1500) {
+        lastLayerTime+=1500;
+        layers.unshift(time);
+        //console.log("ADDED NEW!", motionFunction(0));
+
+    }
     
+    for (var i=0; i < layers.length; i++) {
+        if (time - layers[i] > CYCLE_DURATION) {
+            layers.splice(i, 1);
+            i--;
+            continue;
+        }
+        ctx.save();
+        ctx.translate(WIDTH/2, HEIGHT/2);
+        var data = motionFunction(time - layers[i]);
+        ctx.scale(data.scale, data.scale);
+        ctx.globalAlpha = data.opacity;
+        ctx.drawImage(modifiedImage, -modifiedImage.width/2, -modifiedImage.height/2);
+        ctx.restore();
+    }
 
     window.requestAnimationFrame(update);
 }
@@ -127,18 +160,23 @@ function createImage(scale = 0) {
         image.onload = () => {
             console.log("Image loaded!");
             var bigImage = upscale(image, scale);
-            const WIDTH = bigImage.getAttribute("width");
-            const HEIGHT = bigImage.getAttribute("height");
+            const WIDTH = Number(bigImage.getAttribute("width"));
+            const HEIGHT = Number(bigImage.getAttribute("height"));
             var finalCanvas = document.createElement("CANVAS");
             finalCanvas.setAttribute("width", WIDTH*2);
             finalCanvas.setAttribute("height", HEIGHT*2);
             /** @type {CanvasRenderingContext2D} */
             var ctx = finalCanvas.getContext("2d");
             ctx.drawImage(bigImage, WIDTH, HEIGHT);
-            ctx.scale(-1, 0);
-            ctx.drawImage(bigImage, WIDTH, HEIGHT);
+            ctx.scale(-1, 1);
+            ctx.drawImage(bigImage, -WIDTH, HEIGHT);
+            ctx.scale(-1, -1);
+            ctx.drawImage(bigImage, WIDTH, -HEIGHT);
+            ctx.scale(-1, 1);
+            ctx.drawImage(bigImage, -WIDTH, -HEIGHT);
 
-            document.body.appendChild(finalCanvas);
+            //document.body.appendChild(finalCanvas);
+            resolve(finalCanvas);
         }
         image.onerror = reject;
         image.src = IMAGE_URL;
