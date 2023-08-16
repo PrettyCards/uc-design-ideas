@@ -17,9 +17,9 @@ document.body.appendChild(GASTER_TEXT_CONTAINER);
 function SetGasterText(string, clickToClear = true) {
     var test = document.createElement("DIV");
     test.className = "GASTER_TEXT";
-    var typedText = new TypedText(string, test);
+    var typedText = new TypedText(string, test, true);
     typedText.SetWidth();
-    typedText.alwaysMute = true;
+    test.style.height = "fit-content";
     GASTER_TEXT_CONTAINER.appendChild(test);
 }
 
@@ -45,5 +45,5 @@ function StartAnotherHim() {
 
 setTimeout(() => {
     StartAnotherHim();
-    SetGasterText("Hi! Nice to\n meet you!");
+    SetGasterText("Hi! [style:red]Nice[style:white] to\nmeet you!");
 }, 1000);

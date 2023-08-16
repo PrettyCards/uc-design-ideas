@@ -159,6 +159,7 @@
     align-items: center;
     align-content: center;
     padding-top: 4em;
+    
 }
 
 .GASTER_TEXT {
@@ -167,6 +168,7 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
     animation: GASTER_TEXT_GLOW 5s infinite ease-in-out alternate;
+    width: fit-content;
 }
 
 @keyframes GASTER_TEXT_GLOW {
@@ -176,4 +178,9 @@
 	to {
         -webkit-text-stroke-color: rgba(255, 255, 255, 0.5);
 	}
+}
+
+.PrettyCards_UTTextParagraph {
+    float: left;
+    clear: both;
 }

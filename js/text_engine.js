@@ -3,7 +3,7 @@ var defaultVoice = VoiceDictionary.INSTANCE.AddVoice("default", "default");
 
 class TypedText {
 
-    constructor(text, parent, animDispatcher = null) {
+    constructor(text, parent, fullMute = false, animDispatcher = null) {
         this.removed = false;
         this.defaultSpeed = 33;
         this.speed = this.defaultSpeed; // The miliseconds between displaying letters.
@@ -20,7 +20,7 @@ class TypedText {
         this.voice = this.defaultVoice;
         this.audio = new Audio();
         this.novoice = false;
-        this.alwaysMute = false;
+        this.alwaysMute = fullMute;
         this.animDispatcher = animDispatcher;
         this.isTalking = false;
         this.onremove = function() {};
@@ -56,28 +56,22 @@ class TypedText {
     // This one is NOT called automatically! It may be called optionally when necessary!
     // Also does not take automatic line breaks into account, I think . . . ?
     SetWidth(sizeParent = false) {
-        // TODO: Try the thing we thought of with dad
+        var savedOpacity = this.container.style.opacity;
+        //this.container.style.opacity = "0";
         while (!this.IsPageDone()) {
             this.Progress();
         }
         var sizeElem = sizeParent ? this.container.parentElement : this.container;
-        var copy = sizeElem.cloneNode(true);
-        /*
-        var computedStyle = window.getComputedStyle(sizeElem);
-        console.log(copy.style.fontSize, computedStyle.fontSize);
-        copy.style.fontSize = computedStyle.fontSize;
-        copy.style.letterSpacing = computedStyle.letterSpacing;
-        */
-        // Dirty as hell. Will have to find better methods for calculating final text sizes.
-        copy.className += " " + this.container.parentElement.className;
-        copy.style.width = "";
-        copy.style.width = "fit-content";//sizeElem.getBoundingClientRect().width + "px";
-        copy.style.transition = "none";
-        document.body.appendChild(copy);
-        var width = copy.getBoundingClientRect().width;
-        sizeElem.style.width = width + "px";
+        setTimeout(() => {
+            console.log("sizeElem BoundingClientRect in setTimeout: ", sizeElem.getBoundingClientRect());
+            var width = sizeElem.getBoundingClientRect().width;
+            sizeElem.style.width = (width + 50) + "px";
+            this.container.style.opacity = savedOpacity;
+            this.ResetTextArea();
+        }, 1);
+        
         //copy.remove();
-        this.ResetTextArea();
+        //this.ResetTextArea();
     }
 
     NextPage() {
