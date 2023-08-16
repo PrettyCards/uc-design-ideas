@@ -65,7 +65,7 @@ class TypedText {
         setTimeout(() => {
             console.log("sizeElem BoundingClientRect in setTimeout: ", sizeElem.getBoundingClientRect());
             var width = sizeElem.getBoundingClientRect().width;
-            sizeElem.style.width = (width + 50) + "px";
+            sizeElem.style.width = (width * 1.15) + "px";
             this.container.style.opacity = savedOpacity;
             this.ResetTextArea();
         }, 1);
@@ -180,6 +180,7 @@ class TypedText {
 
     StartNewSpan(className) {
         this.currentSpan = document.createElement("SPAN");
+        //this.currentSpan.style.display = "inline";
         this.currentSpan.className = className;
         this.currentParagraph.appendChild(this.currentSpan);
         return this.currentSpan;

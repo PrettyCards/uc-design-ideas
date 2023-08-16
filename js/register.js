@@ -45,5 +45,5 @@ function StartAnotherHim() {
 
 setTimeout(() => {
     StartAnotherHim();
-    SetGasterText("Hi! [style:red]Nice[style:white] to\nmeet you!");
+    SetGasterText("Hi! [style:red]Nice[style:white] to\n meet you!");
 }, 1000);

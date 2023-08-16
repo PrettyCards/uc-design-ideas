@@ -183,4 +183,7 @@
 .PrettyCards_UTTextParagraph {
     float: left;
     clear: both;
+    white-space: nowrap;
+    text-wrap: nowrap;
+    white-space-collapse: preserve;
 }
