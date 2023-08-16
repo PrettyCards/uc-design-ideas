@@ -1,11 +1,5 @@
-import { plugin, settings } from "./underscript_checker";
-import { voiceDictionary } from "./voice_dictionary";
 
-var defaultVoice;
-
-plugin.events.on("PrettyCards:onPageLoad", function() {
-    defaultVoice = voiceDictionary.AddVoice("default", "default");
-})
+var defaultVoice = VoiceDictionary.INSTANCE.AddVoice("default", "default");
 
 class TypedText {
 
@@ -26,7 +20,7 @@ class TypedText {
         this.voice = this.defaultVoice;
         this.audio = new Audio();
         this.novoice = false;
-        this.alwaysMute = settings.silent_dialogue.value();
+        this.alwaysMute = false;
         this.animDispatcher = animDispatcher;
         this.isTalking = false;
         this.onremove = function() {};
@@ -56,6 +50,33 @@ class TypedText {
         var height = copy.getBoundingClientRect().height;
         sizeElem.style.height = height + "px";
         copy.remove();
+        this.ResetTextArea();
+    }
+
+    // This one is NOT called automatically! It may be called optionally when necessary!
+    // Also does not take automatic line breaks into account, I think . . . ?
+    SetWidth(sizeParent = false) {
+        // TODO: Try the thing we thought of with dad
+        while (!this.IsPageDone()) {
+            this.Progress();
+        }
+        var sizeElem = sizeParent ? this.container.parentElement : this.container;
+        var copy = sizeElem.cloneNode(true);
+        /*
+        var computedStyle = window.getComputedStyle(sizeElem);
+        console.log(copy.style.fontSize, computedStyle.fontSize);
+        copy.style.fontSize = computedStyle.fontSize;
+        copy.style.letterSpacing = computedStyle.letterSpacing;
+        */
+        // Dirty as hell. Will have to find better methods for calculating final text sizes.
+        copy.className += " " + this.container.parentElement.className;
+        copy.style.width = "";
+        copy.style.width = "fit-content";//sizeElem.getBoundingClientRect().width + "px";
+        copy.style.transition = "none";
+        document.body.appendChild(copy);
+        var width = copy.getBoundingClientRect().width;
+        sizeElem.style.width = width + "px";
+        //copy.remove();
         this.ResetTextArea();
     }
 
@@ -271,5 +292,3 @@ class TypedText {
     }
 
 }
-
-export {TypedText};

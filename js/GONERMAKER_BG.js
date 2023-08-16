@@ -34,9 +34,10 @@ function addCanvas() {
     canvas.className = "GONERMAKER_BG_CANVAS";
     canvas.setAttribute("width", ratio * DR_WIDTH);
     canvas.setAttribute("height", ratio * DR_HEIGHT);
-    document.body.prepend(canvas);
+    
 
     createImage(ratio*2).then((bigImageCanvas) => {
+        document.body.prepend(canvas);
         modifiedImage = bigImageCanvas;
         window.requestAnimationFrame(update)
     });
