@@ -57,7 +57,7 @@ class TypedText {
     // Also does not take automatic line breaks into account, I think . . . ?
     SetWidth(sizeParent = false) {
         var savedOpacity = this.container.style.opacity;
-        //this.container.style.opacity = "0";
+        this.container.style.opacity = "0";
         while (!this.IsPageDone()) {
             this.Progress();
         }
