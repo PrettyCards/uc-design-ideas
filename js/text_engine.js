@@ -63,9 +63,9 @@ class TypedText {
         }
         var sizeElem = sizeParent ? this.container.parentElement : this.container;
         setTimeout(() => {
-            console.log("sizeElem BoundingClientRect in setTimeout: ", sizeElem.getBoundingClientRect());
+            //console.log("sizeElem BoundingClientRect in setTimeout: ", sizeElem.getBoundingClientRect());
             var width = sizeElem.getBoundingClientRect().width;
-            sizeElem.style.width = (width * 1.15) + "px";
+            sizeElem.style.width = width + "px";//(width * 1.1 + 10) + "px";
             this.container.style.opacity = savedOpacity;
             this.ResetTextArea();
         }, 1);
