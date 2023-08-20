@@ -138,6 +138,7 @@ function calcAnimRatios() {
 
     // Stuff that depends on this . . .
     AddHearts(smallRatio * 2);
+    preloadAndScaleAll(smallRatio * 2);
 }
 
 window.addEventListener("load", calcAnimRatios);
