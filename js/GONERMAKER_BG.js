@@ -61,6 +61,10 @@ function update(time) {
         ctx.restore();
     }
 
+    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
+    ctx.fillStyle = "";
+
     window.requestAnimationFrame(update);
 }
 

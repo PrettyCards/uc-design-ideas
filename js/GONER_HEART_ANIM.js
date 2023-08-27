@@ -28,7 +28,7 @@ var lastTime = 0;
 var speed = 0;
 var floatFrame = 0;
 var heart_floating = false;
-const HEART_ANIM_DURATION = 1200;
+const HEART_ANIM_DURATION = 1100;
 const PAUSE_NUM = 100;
 const HEART_FLOAT_MULT = 0.01;
 function StartHeartAnim(backward = false) {
@@ -52,6 +52,16 @@ function WidthFunction(frame) {
     var width = 
 }
 */
+
+function createHeartGradient(ctx, x, y, length) {
+    const gradangle = 0;
+    var HEART_BEAM_GRADIENT = ctx.createLinearGradient(x, y, x + Math.cos(gradangle) * length, y + Math.sin(gradangle) * length);
+    HEART_BEAM_GRADIENT.addColorStop(0, "#660000");
+    HEART_BEAM_GRADIENT.addColorStop(0.2, "red");
+    HEART_BEAM_GRADIENT.addColorStop(0.8, "red");
+    HEART_BEAM_GRADIENT.addColorStop(1, "#660000");
+    return HEART_BEAM_GRADIENT;
+}
 
 function HeartAnimUpdate(time) {
     heart_canvas.height = window.innerHeight;
@@ -77,13 +87,21 @@ function HeartAnimUpdate(time) {
         ctx.drawImage(heart_normal, 0, Math.ceil(halfHeight - (heart_normal.height/2)) + floatNum);
     }
 
+    // I can't seem to get the gradient to look good.
+    // Toby must have used something I am not thinking of.
+    // Disabling for now
     ctx.fillStyle = "red";
     
     if (frame > halfDuration) {
+        //ctx.fillStyle = createHeartGradient(ctx, (heart_canvas.width - barWidth)/2, 0, barWidth);
         ctx.fillRect((heart_canvas.width - barWidth)/2, halfHeight + floatNum, barWidth, halfHeight - floatNum);
+
+        //ctx.fillStyle = createHeartGradient(ctx, (heart_canvas.width - barWidth)/4, 0, barWidth/2);
         ctx.fillRect((heart_canvas.width - barWidth)/4, 0, barWidth/2 * 1.01 , halfHeight + 2 + floatNum);
+        //ctx.fillStyle = createHeartGradient(ctx, (heart_canvas.width - barWidth)/4 + (heart_canvas.width/2), 0, barWidth/2);
         ctx.fillRect((heart_canvas.width - barWidth)/4 + (heart_canvas.width/2), 0, barWidth/2 * 1.01, halfHeight + 2 + floatNum);
     } else {
+        //ctx.fillStyle = createHeartGradient(ctx, (heart_canvas.width - barWidth)/2, 0, barWidth);
         ctx.fillRect((heart_canvas.width - barWidth)/2, 0, barWidth, heart_canvas.height);
     }
     
