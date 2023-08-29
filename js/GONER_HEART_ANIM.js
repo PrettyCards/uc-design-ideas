@@ -4,6 +4,8 @@
 var heart_normal;
 /**@type {HTMLCanvasElement} */
 var heart_big;
+/**@type {HTMLCanvasElement} */
+var heart_small;
 
 var heart_appear_noise = new Audio();
 heart_appear_noise.src = "./audio/AUDIO_APPEARANCE.ogg";
@@ -14,6 +16,7 @@ function AddHearts(scale) {
     image.onload = function() {
         heart_normal = upscale(image, scale);
         heart_big = upscale(image, scale*2);
+        heart_small = upscale(image, Math.max(Math.floor(scale/2), 1));
         //document.body.appendChild(heart_normal);
         //document.body.appendChild(heart_big);
     }

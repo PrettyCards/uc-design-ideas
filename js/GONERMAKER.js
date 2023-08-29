@@ -3,7 +3,12 @@
 /**@type {HTMLCanvasElement} */
 var goner_canvas = document.createElement("CANVAS");
 goner_canvas.className = "GONERMAKER";
-document.body.appendChild(goner_canvas);
+
+var goner_placer = document.createElement("DIV");
+goner_placer.className = "GONERMAKER_PLACER";
+goner_placer.appendChild(goner_canvas);
+document.body.append(goner_placer);
+
 
 var heads = [], torsos = [], legs = [];
 const HEAD_COUNT = 8, TORSO_COUNT = 6, LEG_COUNT = 5;
@@ -71,6 +76,7 @@ function RenderBodyPart(/**@type {CanvasRenderingContext2D} */ ctx, x = 0, y = 0
 }
 
 function GONERMAKER_START() {
+    GONERMAKER_FADE(false, true);
     //document.body.appendChild(goner_canvas);
     if (gonerFirstFrame <= 0) {
         window.requestAnimationFrame((time) => {
@@ -83,8 +89,8 @@ function GONERMAKER_START() {
     }
 }
 
-function GONERMAKER_FADE(out = false) {
-    if (choiceNumber >= 4) {
+function GONERMAKER_FADE(out = false, force = false) {
+    if (!force && choiceNumber >= 4) {
         return;
     }
     if (out) {
@@ -94,6 +100,10 @@ function GONERMAKER_FADE(out = false) {
     }
     //var fun = out ? goner_canvas.classList.add : goner_canvas.classList.remove;
     //fun("FADE");
+}
+
+function GONERMAKER_TOGGLE_RIGHT() {
+    goner_placer.classList.toggle("GONERMAKER_PLACER_RIGHT");
 }
 
 function ModifiedRemainder(nr, max) {
@@ -178,9 +188,13 @@ function UpdateGONERMAKER(time) {
     ctx.clearRect(0, 0, goner_canvas.width, goner_canvas.height);
     // Head after it got selected!
     var x = goner_canvas.width/2;
-    var heady = goner_canvas.height/4;
+    var heady = heart_small.height + (gonerScale*16);
     var torsoy = heady + heads[headId].height - (gonerScale*6);
     var legsy = torsoy + torsos[torsoId].height - (gonerScale*4);
+
+    if (choiceNumber > 0 && choiceNumber < 4) {
+        ctx.drawImage(heart_small, goner_canvas.width/2 - heart_small.width/2, 0);
+    }
 
     // Separated because all after effects need to be below all regular body parts!
     if (choiceNumber > 1 || (choiceNumber == 1 && !menuMoveFrame)) {

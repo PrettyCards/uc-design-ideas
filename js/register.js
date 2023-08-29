@@ -2,6 +2,14 @@
 var GASTER_TEXT_CONTAINER = document.createElement("DIV");
 GASTER_TEXT_CONTAINER.style.display = "none";
 
+var GASTER_TEXT_MOVER = document.createElement("DIV");
+GASTER_TEXT_MOVER.className = "GASTER_TEXT_LEFTER";
+GASTER_TEXT_CONTAINER.appendChild(GASTER_TEXT_MOVER);
+
+function toggleMoveGasterText() {
+    GASTER_TEXT_MOVER.classList.toggle("ON");
+}
+
 document.getElementById("ESTABLISH_CONNECTION").onclick = function() {
     document.getElementById("ESTABLISH_CONNECTION_BUTTON_QUICK").remove();
     this.remove();
@@ -10,12 +18,16 @@ document.getElementById("ESTABLISH_CONNECTION").onclick = function() {
 }
 
 function nextPageClick(ignoreNoskip = false) {
+    if (typeof(ignoreNoskip) != "boolean") {
+        ignoreNoskip = false;
+    }
     if (!ignoreNoskip && !phaseSkipByClick) {
         return;
     }
+    if (!ignoreNoskip && (lastTypedText == null || !lastTypedText.IsPageDone())) {
+        return;
+    }
     if (document.getElementById("ESTABLISH_CONNECTION") || 
-        lastTypedText == null || 
-        !lastTypedText.IsPageDone() || 
         lastTypedText.container.parentElement.classList.contains("MESSAGE_FADE")) {
         return;
     }
@@ -37,6 +49,8 @@ window.addEventListener("load", () => {
 GASTER_TEXT_CONTAINER.className = "GASTER_TEXT_CONTAINER";
 document.body.appendChild(GASTER_TEXT_CONTAINER);
 
+
+
 // Only works one line at a time due to
 // The fade effect
 function SetGasterText(string, clickToClear = true) {
@@ -47,7 +61,7 @@ function SetGasterText(string, clickToClear = true) {
     lastTypedText.speed = lastTypedText.defaultSpeed;
     lastTypedText.SetWidth();
     test.style.height = "fit-content";
-    GASTER_TEXT_CONTAINER.appendChild(test);
+    GASTER_TEXT_CONTAINER.prepend(test);
 }
 
 function PitchUpAnotherHim() {
@@ -114,15 +128,15 @@ function ADVANCE_SEQUENCE(phaseToSet = -1) {
         setTimeout(ADVANCE_SEQUENCE, 5000);
     } else if (PHASE == 10) {
         phaseSkipByClick = true;
-        SetGasterText("FIRST.   ");
+        SetGasterText("FIRST.");
     } else if (PHASE == 11) {
         phaseSkipByClick = true;
         SetGasterText("YOU MUST CREATE\n[w:200]A VESSEL.");
     } else if (PHASE == 12) {
         phaseSkipByClick = false;
         SetGasterText("SELECT THE HEAD\nTHAT YOU PREFER.");
-        GONERMAKER_START();
         choiceNumber = 1;
+        GONERMAKER_START();
     } else if (PHASE == 13) {
         phaseSkipByClick = false;
         SetGasterText("SELECT THE TORSO\nTHAT YOU PREFER.");
@@ -139,7 +153,34 @@ function ADVANCE_SEQUENCE(phaseToSet = -1) {
     } else if (PHASE == 16) {
         phaseSkipByClick = false;
         SetGasterText("DO YOU ACCEPT IT?");
-        // INSERT CHOICE HERE
+        var choice = new BinaryQuestion();
+        choice.setOnChoose((isYes) => {
+            choice.fadeOut();
+            if (!isYes) {
+                GONERMAKER_FADE(true, true);
+            }
+            FadeOutGasterText(() => {
+                choice.remove();
+                ADVANCE_SEQUENCE(isYes ? -1 : 12);
+            });
+        })
+    } else if (PHASE == 17) {
+        phaseSkipByClick = true;
+        SetGasterText("EXCELLENT.");
+    } else if (PHASE == 18) {
+        phaseSkipByClick = true;
+        SetGasterText("YOU HAVE CREATED[w:300]\nA WONDERFUL FORM.");
+    } else if (PHASE == 19) {
+        phaseSkipByClick = true;
+        SetGasterText("NOW.");
+    } else if (PHASE == 20) {
+        phaseSkipByClick = true;
+        SetGasterText("LET US SHAPE ITS\nMIND AS YOUR OWN.");
+    } else if (PHASE == 21) {
+        phaseSkipByClick = false;
+        GONERMAKER_TOGGLE_RIGHT();
+        toggleMoveGasterText();
+        SetGasterText("WHAT IS ITS\nFAVORITE FOOD?");
     }
 }
 
